@@ -1,0 +1,56 @@
+<%- include("templates/header") %>
+
+<link rel="stylesheet" href="/css/editContent.css">
+
+<h1>Edit Link</h1>
+<div class="edit-container">
+
+    <form action="/updateLink" method="post">
+
+        <%= console.log("BRIDMA", link) %>
+        <input type="hidden" name="contentId" class="edit-input" value="<%= link.content_id %>">
+
+        <div>
+            <label for="originalUrl">Original URL:</label>
+            <input type="text" id="originalUrl" name="originalUrl" class="edit-input" value="<%= link.original_url %>">
+        </div>
+
+        <div>
+            <label for="shortenedUrl">Shortened URL:</label>
+            <input type="text" id="shortenedUrl" name="shortenedUrl" class="edit-input" value="<%= link.shortened_url %>">
+        </div>
+
+        <div class="select-container">
+            <label for="linkTag">Link Tag:</label>
+            <select id="linkTag" name="linkTag" class="edit-input">
+                <% tags.forEach(tag => { %>
+                    <option value="<%= tag.tag_id %>" <% if (tag.tag_id === link.tag_id) { %>selected<% } %>><%= tag.description %></option>
+                <% }); %>
+            </select>
+        </div>
+        
+        <div class="checkbox-container">
+            <label for="activeStatus">Active Status:</label>
+            <input type="checkbox" id="activeStatus" name="activeStatus" class="edit-input" <% if (link.active_status === 1) { %>checked<% } %>>
+        </div>
+        
+
+        <div class="button-container">
+            <button type="submit" class="edit-button">Update Link</button>
+        
+            <% if (typeof errorMessage !== 'undefined' && errorMessage !== null) { %>
+                <div class="error-message">
+                    <%= errorMessage %>
+                </div>
+            <% } else if (typeof req.query.error !== 'undefined') { %>
+                <div class="error-message">
+                    <%= decodeURIComponent(req.query.error) %>
+                </div>
+            <% } %>
+        </div>
+
+    </form>
+
+</div>
+
+<%- include("templates/footer") %>

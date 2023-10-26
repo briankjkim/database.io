@@ -1,0 +1,56 @@
+<%- include("templates/header") %>
+
+<link rel="stylesheet" href="/css/editContent.css">
+
+<h1>Edit Text</h1>
+<div class="edit-container">
+
+    <form action="/updateText" method="post">
+
+        <%= console.log("DOGMA", textContent) %>
+        <input type="hidden" name="contentId" class="edit-input" value="<%= textContent.content_id %>">
+
+        <div>
+            <label for="textValue">Text Value:</label>
+            <textarea name="text_value" id="textValue" rows="4" cols="50"><%= textContent.text_value %></textarea>            
+        </div>
+
+        <div>
+            <label for="shortenedUrl">Shortened URL:</label>
+            <input type="text" id="shortenedUrl" name="shortenedUrl" class="edit-input" value="<%= textContent.shortened_url %>">
+        </div>
+
+        <div class="select-container">
+            <label for="textTag">Text Tag:</label>
+            <select id="textTag" name="textTag" class="edit-input">
+                <% tags.forEach(tag => { %>
+                    <option value="<%= tag.tag_id %>" <% if (tag.tag_id === textContent.tag_id) { %>selected<% } %>><%= tag.description %></option>
+                <% }); %>
+            </select>
+        </div>
+        
+        <div class="checkbox-container">
+            <label for="activeStatus">Active Status:</label>
+            <input type="checkbox" id="activeStatus" name="activeStatus" class="edit-input" <% if (textContent.active_status === 1) { %>checked<% } %>>
+        </div>
+        
+
+        <div class="button-container">
+            <button type="submit" class="edit-button">Update Text</button>
+        
+            <% if (typeof errorMessage !== 'undefined' && errorMessage !== null) { %>
+                <div class="error-message">
+                    <%= errorMessage %>
+                </div>
+            <% } else if (typeof req.query.error !== 'undefined') { %>
+                <div class="error-message">
+                    <%= decodeURIComponent(req.query.error) %>
+                </div>
+            <% } %>
+        </div>
+
+    </form>
+
+</div>
+
+<%- include("templates/footer") %>

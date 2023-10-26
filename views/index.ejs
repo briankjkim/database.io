@@ -1,0 +1,97 @@
+<%- include("templates/header") %>
+
+<link rel="stylesheet" href="/css/index.css">
+
+<% if (typeof username !== 'undefined') { %>
+  <div class="welcome-container">
+    <h1>Welcome, <%= username %>!</h1>
+    <p>Discover amazing photos from talented creators.</p>
+  </div>
+<% } else { %>
+  <div class="welcome-container">
+    <h1>Welcome to Linkaio!</h1>
+    <p>Sign up or log in to start exploring.</p>
+  </div>
+<% } %>  
+
+<div class="container">
+  <!-- Display Top Image -->
+  <div class="content-container">
+    <div class="content-header">
+      <h2>Top Image</h2>
+    </div>
+    <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topImage.content_url %>">
+      <div class="content-card">
+        <img src="<%= 'https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/' + topImage.image_uuid + '.jpg' %>" alt="Image">
+      </div>
+    </a>
+  </div>
+
+  <!-- Display Top Link -->
+  <div class="content-container">
+    <div class="content-header">
+      <h2>Top Link</h2>
+    </div>
+    <div class="content-card">
+      <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topLink.content_url %>"><%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topLink.content_url %></a>
+    </div>
+  </div>
+
+  <!-- Display Top Text -->
+  <div class="content-container">
+    <div class="content-header">
+      <h2>Top Text</h2>
+    </div>
+    <div class="content-card">
+      <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topText.content_url %>">
+      <p><%= topText.text_value %></p>
+    </div>
+  </div>
+</div>
+
+<!-- Display All Content -->
+<div class="display-container">
+  <% let allContent = [...images, ...links, ...texts]; %>
+  <% let randomContent = allContent.sort(() => Math.random() - 0.5); %>
+  
+  <div class="content-row">
+    <% for (let i = 0; i < randomContent.length; i++) { %>
+      <div class="content-container">
+        <div class="content-card">
+          <% if (randomContent[i].content_type_id === 1) { %>
+            <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
+              <%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>
+            </a>
+            <% } else if (randomContent[i].content_type_id === 2) { %>
+              <% const imageUrl = 'https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/' + randomContent[i].image_uuid + '.jpg'; %>
+  
+              <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>" class="image-link">
+                <img src="<%= imageUrl %>" alt="Image" onload="checkImageSize(this)">
+              </a>  
+          <% } else { %>
+            <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
+              <p><%= randomContent[i].text_value %></p>
+            </a>
+          <% } %>
+        </div>
+      </div>
+      <% if ((i + 1) % 3 === 0) { %>
+        </div><div class="content-row">
+      <% } %>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  function checkImageSize(img) {
+  if (img.naturalHeight > 550) {
+    img.classList.add('card-image-large');
+  } else {
+    img.classList.add('card-image');
+  }
+}
+</script>
+
+
+
+<%- include("templates/footer") %>

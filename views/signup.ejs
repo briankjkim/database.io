@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/css/signup.css">
+
+<form method="POST" action="/signup" class="signup-form">
+    <h1>Sign Up</h1>
+    <h4>Small Company description</h4>
+    <div class="container">
+        <input type="text" id="username" name="username" placeholder="Name">
+    
+        <input type="email" id="email" name="email" placeholder="Email">
+    
+        <input type="password" id="password" name="password" placeholder="Password">
+    
+        <% if (missingEmail) { %>
+            <p class="error-message">Please enter your email.</p>
+        <% } %>
+        <% if (missingUsername) { %>
+            <p class="error-message">Please enter your username.</p>
+        <% } %>
+        <% if (missingPassword) { %>
+            <p class="error-message">Please enter your password.</p>
+        <% } %>
+        <% if (invalidPassword) { %>
+            <p class="error-message">Password must be at least 10 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.</p>
+        <% } %> 
+        
+        <input type="submit" value="Submit">
+    </div>
+</form>
+
+
+<%- include("templates/footer") %>

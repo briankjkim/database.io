@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #B1CC74;
+    color: #1c1f20;
+  }
+
+h1 {
+    text-align: center;
+    margin-top: 15vh;
+}
+
+.edit-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 400px;
+    max-width: 100%;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.edit-input {
+    width: calc(100% - 22px); 
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    display: inline-block; 
+    vertical-align: middle; 
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px; 
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: #ff0000;
+    font-size: 14px;
+    display: inline-block; 
+    vertical-align: middle; 
+}
+
+.select-container,
+.checkbox-container {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+select {
+    width: calc(100% - 22px); 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    display: inline-block; 
+    vertical-align: middle; 
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+.checkbox-container label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.button-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-section-div {
+    display: none;
+    padding-left: 5%;
+  }

@@ -1,0 +1,39 @@
+body {
+    background-color: #B1CC74;
+}
+
+.show-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.content-item {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    max-width: 65vw;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.text {
+    margin-top: 25vh;
+}
+
+.content-item img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    max-height: 100vh; 
+}
+
+.content-item .tag,
+.content-item .hits,
+.content-item .created-date {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}

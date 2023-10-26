@@ -1,0 +1,30 @@
+<%- include("templates/header") %>
+
+<link rel="stylesheet" href="/css/showContentURL.css">
+
+<div class="show-content-wrapper">
+    <% content.forEach(data => { %>
+        <div class="content-item <%= data.content_type_id === 2 ? 'image' : 'text' %>">
+            <% if (data.content_type_id === 1) { %>
+                <a href="<%= data.original_url %>">
+                    <%= data.original_url %>
+                </a>
+            <% } else if (data.content_type_id === 2) { %>
+                <img src="https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/<%= data.image_uuid %>.jpg"
+                    alt="Image">
+            <% } else { %>
+                <%= data.text_value %>
+            <% } %>
+            <div class="tag">
+                Tag: <%= data.tag %>
+            </div>
+            <div class="hits">
+                Total Hits: <%= data.total_hits %>
+            </div>
+            <div class="created-date">
+                Created Date: <%= data.created_date.toLocaleString() %>
+            </div>
+        </div>
+    <% }); %>
+</div>
+<%- include("templates/footer") %>

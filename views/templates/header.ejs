@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/header.css">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBar = document.querySelector('.search-bar');
+
+            searchBar.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    const searchText = searchBar.value;
+
+                    // Send a request to your server to check for matching tags
+                    fetch(`/checkTag?search=${searchText}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                            if (data.tagFound) {
+                                window.location.href = `/tags/${searchText}`;
+                            } else {
+                                alert('Tag not found. Please try a different search term.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <a href="/">
+            <img src="/img/icon.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="search-bar" placeholder="Search...">
+        <div class="btn-container">
+            <% if (isLoggedIn) { %>
+                <div class="dropdown">
+                    <button type="submit" class="btn btn-userContent">My Content</button>
+                    <div class="dropdown-content">
+                        <a href="/links">Links</a>
+                        <a href="/images">Images</a>
+                        <a href="/text">Texts</a>
+                    </div>
+                </div>
+                <form action="/logout" method="post" class="btn-form">
+                    <button type="submit" class="btn btn-logout">Logout</button>
+                </form>
+            <% } else { %>
+                <form action="/login" method="get" class="btn-form">
+                    <button type="submit" class="btn btn-login">Login</button>
+                </form>
+                <form action="/signup" method="get" class="btn-form">
+                    <button type="submit" class="btn btn-signup">Sign Up</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</html>

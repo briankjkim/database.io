@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/css/login.css">
+
+<h1>Login</h1>
+<h4>Small Company description</h4>
+<div class="login-container">
+  <form action="/loggingin" method="POST" class="login-form">
+    <label for="email"></label>
+    <% if (missingEmail == 1) { %>
+      <p class="error-message">Please enter your email.</p>
+    <% } %>
+    <input type="email" id="email" name="email" placeholder="Email">
+    <br>
+    <label for="password"></label>
+    <input type="password" id="password" name="password" placeholder="Password">
+    <% if (missingPassword == 2) { %>
+      <p class="error-message">Please enter your password.</p>
+    <% } %>
+    <% if (IncorrectPassword == 3) { %>
+      <p class="error-message">Password does not match the account.</p>
+    <% } %>
+    <br>
+    <input type="submit" value="Submit">
+  </form>
+</div>

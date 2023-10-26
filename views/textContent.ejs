@@ -1,0 +1,129 @@
+<%- include("templates/header") %>
+
+  <link rel="stylesheet" href="/css/textContent.css">
+  <div class="data-display-wrapper">
+
+    <h1>Text</h1>
+
+    <div class="input-container">
+      <form action="/textUpload" method="post">
+        <label for="userInput" class="text-label">Enter Text:</label>
+        <div class="textarea-container">
+          <textarea name="text" id="userInput" rows="4" cols="50" class="text-area"></textarea>
+        </div>
+        <div class="dropdown-container">
+          <select id="descriptionDropdown" name="tag_id" class="text-dropdown-tags"></select>
+          <button type="submit" id="confirmButton" class="text-confirm-button">Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="data-display-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Text Value</th>
+          <th>Text Tag</th>
+          <th>Content URL</th>
+          <th>Active Status</th>
+          <th>Total Hits</th>
+          <th>Created Date</th>
+          <th>Last Hits</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% texts.forEach(text=> { %>
+          <tr>
+            <td>
+              <a href="/editText/<%= text.content_id %>">
+                <img src="/img/edit.png" alt="Edit Text">
+              </a>
+            </td>
+            <td>
+              <%= text.text_value %>
+            </td>
+            <td>
+              <%= text.text_tag %>
+            </td>
+            <td>
+              <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + text.content_url %>">
+                <%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + text.content_url %>
+              </a>
+            </td>
+            <td>
+              <input type="checkbox" <% if (text.active_status===1) { %>checked<% } %> onclick="updateActiveStatus('<%=
+                  text.content_id %>')" onchange="refreshPage()">
+            </td>
+            <td>
+              <%= text.total_hits %>
+            </td>
+            <td>
+              <% const createdDate=new Date(text.created_date); %>
+                <% if (isNaN(createdDate.getTime())) { %>
+                  No creation date
+                  <% } else { %>
+                    <%= createdDate.toDateString() %>
+                      <%= createdDate.toLocaleTimeString() %>
+                        <% } %>
+            </td>
+            <td>
+              <% const lastHitDate=new Date(text.last_hit); %>
+                <% if (isNaN(lastHitDate.getTime())) { %>
+                  No clicks yet
+                  <% } else { %>
+                    <%= lastHitDate.toDateString() %>
+                      <%= lastHitDate.toLocaleTimeString() %>
+                        <% } %>
+            </td>
+            <td>
+              <a href="/deleteText/<%= text.content_id %>">
+                <img class="trashImg" src="/img/trash.png" alt="Edit Text">
+              </a>
+            </td>
+          </tr>
+          <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        const response = await fetch('/descriptions');
+        const descriptions = await response.json();
+        var descriptionDropdown = document.getElementById('descriptionDropdown');
+        descriptions.forEach(description => {
+          var option = document.createElement('option');
+          option.value = description.tag_id;
+          option.text = description.description;
+          descriptionDropdown.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching descriptions:', error);
+      }
+    });
+
+    async function updateActiveStatus(contentId) {
+      try {
+        console.log('Updating active status for content ID:', contentId);
+        const formData = new FormData();
+        formData.append('content_id', contentId);
+        const response = await fetch('/updateActiveStatus', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          console.log("pass status change")
+          location.reload();
+        } else {
+          console.log("failed status change")
+        }
+      } catch {
+        console.log("IM DAE")
+      }
+    }
+  </script>
+
+  <%- include("templates/footer") %>

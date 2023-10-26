@@ -1,0 +1,174 @@
+<%- include("templates/header") %>
+
+  <link rel="stylesheet" href="/css/linksContent.css">
+
+  <div class="data-display-wrapper">
+    <form action="/processLink" method="post">
+      <h1>Links</h1>
+      <div class="url-field">
+        <label for="linkInput">Enter Link:</label>
+        <input type="text" id="linkInput" name="link" required>
+      </div>
+      <div class="category-field">
+        <select id="descriptionDropdown" class="link-dropdown-tags" name="linkTag">
+        </select>
+      </div>
+      <button type="submit" class="green-button">Submit</button>
+    </form>
+
+    <div class="data-display-table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Original URL</th>
+            <th>Content URL</th>
+            <th>Link Tag</th>
+            <th>Active Status</th>
+            <th>Total Hits</th>
+            <th>Created Date</th>
+            <th>Last Hits</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% links.forEach(link=> { %>
+            <tr>
+              <td>
+                <a href="/editLink/<%= link.content_id %>">
+                  <img src="/img/edit.png" alt="Edit Link">
+                </a>
+              </td>
+              <td class="overflow-cell">
+                <div class="scroll-container">
+                  <% if (link.active_status===1) { %>
+                    <a href="<%= link.original_url %>"
+                      onclick="handleLinkClick('<%= link.content_id %>', '<%= link.original_url %>')">
+                      <%= link.original_url %>
+                    </a>
+                    <% } else { %>
+                      <%= link.original_url %>
+                        <% } %>
+                </div>
+              </td>
+              <td>
+                <% if (link.active_status===1) { %>
+                  <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + link.content_url %>">
+                    <%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + link.content_url %>
+                  </a>
+                  <% } else { %>
+                    <%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + link.content_url %>
+                      <% } %>
+              </td>
+              <td>
+                <%= link.tag_description %>
+              </td>
+              <td>
+                <input type="checkbox" <% if (link.active_status===1) { %>checked<% } %>
+                  onclick="updateActiveStatus('<%= link.content_id %>')"
+                    onchange="refreshPage()"
+                    >
+              </td>
+              <td>
+                <%= link.total_hits %>
+              </td>
+              <td>
+                <% const createdDate=new Date(link.created_date); %>
+                  <% if (isNaN(createdDate.getTime())) { %>
+                    No creation date
+                    <% } else { %>
+                      <%= createdDate.toDateString() %>
+                        <%= createdDate.toLocaleTimeString() %>
+                          <% } %>
+              </td>
+              <td>
+                <% const lastHitDate=new Date(link.last_hit); %>
+                  <% if (isNaN(lastHitDate.getTime())) { %>
+                    No clicks yet
+                    <% } else { %>
+                      <%= lastHitDate.toDateString() %>
+                        <%= lastHitDate.toLocaleTimeString() %>
+                          <% } %>
+              </td>
+              <td>
+                <a href="/deleteLink/<%= link.content_id %>">
+                  <img class="trashImg" src="/img/trash.png" alt="Edit Text">
+                </a>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      try {
+        const response = await fetch('/descriptions');
+        const descriptions = await response.json();
+        var descriptionDropdown = document.getElementById('descriptionDropdown');
+        descriptions.forEach(description => {
+          var option = document.createElement('option');
+          option.value = description.tag_id;
+          option.text = description.description;
+          descriptionDropdown.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching descriptions:', error);
+      }
+    });
+
+    async function updateActiveStatus(contentId) {
+      try {
+        console.log('Updating active status for content ID:', contentId);
+        const formData = new FormData();
+        formData.append('content_id', contentId);
+        const response = await fetch('/updateActiveStatus', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          console.log("pass status change")
+          location.reload();
+        } else {
+          console.log("failed status change")
+        }
+      } catch {
+        console.log("IM DAE")
+      }
+    }
+
+    function handleLinkClick(contentId, url) {
+      fetch('/updateLinkHits', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "content_id": contentId,
+          "url": url,
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            console.log('Link hits updated successfully.');
+          } else {
+            console.log('Failed to update link hits.');
+          }
+        })
+        .catch(error => {
+          console.error('Error updating link hits:', error);
+        });
+    }
+
+
+
+  </script>
+
+  <%- include("templates/footer") %>

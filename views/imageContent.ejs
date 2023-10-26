@@ -1,0 +1,172 @@
+<%- include("templates/header") %>
+
+  <link rel="stylesheet" href="/css/imageContent.css">
+
+  <div class="data-display-wrapper">
+
+  <h1>Images</h1>
+
+  <div class="add-image-div">
+    <button id="addImageButton">Add Image</button>
+  </div>
+
+  <div id="uploadSection" class="upload-section-div">
+    <p id="selectedImageName"></p>
+    <select id="descriptionDropdown">
+    </select>
+    <button id="uploadButton">Upload</button>
+  </div>
+
+
+  <div class="data-display-table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Link Tag</th>
+          <th>Content URL</th>
+          <th>Active Status</th>
+          <th>Total Hits</th>
+          <th>Created Date</th>
+          <th>Last Hits</th>
+          <th>Image UUID</th>
+          <th>Content ID</th>
+          <th>Image ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% images.forEach(image => { %>
+        <tr>
+          <td>
+            <a href="/editImage/<%= image.content_id %>">
+              <img src="/img/edit.png" alt="Edit Text">
+            </a>
+          </td>
+          <td><%= image.image_tag %></td>
+          <td>
+            <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + image.content_url %>"><%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + image.content_url %></a>
+          </td>
+          <td>
+            <input type="checkbox" <% if (image.active_status === 1) { %>checked<% } %> onclick="updateActiveStatus('<%= image.content_id %>')" onchange="refreshPage()">
+          </td>
+          <td><%= image.total_hits %></td>
+          <td>
+            <% const createdDate = new Date(image.created_date); %>
+            <% if (isNaN(createdDate.getTime())) { %>
+            No creation date
+            <% } else { %>
+            <%= createdDate.toDateString() %> <%= createdDate.toLocaleTimeString() %>
+            <% } %>
+          </td>
+          <td>
+            <% const lastHitDate = new Date(image.last_hit); %>
+            <% if (isNaN(lastHitDate.getTime())) { %>
+            No clicks yet
+            <% } else { %>
+            <%= lastHitDate.toDateString() %> <%= lastHitDate.toLocaleTimeString() %>
+            <% } %>
+          </td>
+          <td>
+            <% if (image.active_status === 1) { %>
+              <img src="https://res.cloudinary.com/dfdephn2w/image/upload/w_150,h_100/v123456789/<%= image.image_uuid %>.jpg" alt="Image">
+            <% } else { %>
+              <%= image.image_uuid %>
+            <% } %>
+          </td>
+          <td><%= image.content_id %></td>
+          <td><%= image.image_id %></td>
+          <td>
+            <a href="/deleteImage/<%= image.content_id %>">
+              <img class="trashImg" src="/img/trash.png" alt="Edit Text">
+            </a>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+
+
+  <script>
+    document.getElementById('addImageButton').addEventListener('click', async function () {
+      var fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.addEventListener('change', async function (event) {
+        var file = event.target.files[0];
+        var selectedImageName = document.getElementById('selectedImageName');
+        selectedImageName.textContent = "Selected Image: " + file.name;
+        document.getElementById('uploadSection').style.display = 'block';
+
+        try {
+          const response = await fetch('/descriptions');
+          const descriptions = await response.json();
+          var descriptionDropdown = document.getElementById('descriptionDropdown');
+          descriptions.forEach(description => {
+            var option = document.createElement('option');
+            option.value = description.tag_id;
+            option.text = description.description;
+            descriptionDropdown.appendChild(option);
+          });
+        } catch (error) {
+          console.error('Error fetching descriptions:', error);
+        }
+
+        document.getElementById('uploadButton').addEventListener('click', async function () {
+          var selectedDescription = document.getElementById('descriptionDropdown').value;
+          // variable is file and selectedDescription
+          if (!file) {
+            alert("Please select an image before uploading.");
+            return;
+          }
+
+          // Create a FormData object to send the file and selectedDescription to the server
+          var formData = new FormData();
+          formData.append('image', file);
+          formData.append('descriptionId', selectedDescription);
+          try {
+            const response = await fetch('/imageUpload', {
+              method: 'POST',
+              body: formData,
+            });
+            if (response.ok) {
+              alert("Image uploaded successfully with description ID: " + selectedDescription);
+              location.reload();
+              // You can do additional actions here if needed.
+            } else {
+              alert("Image upload failed. Please try again.");
+            }
+          } catch (error) {
+            console.error('Error uploading image:', error);
+          }
+        });
+      });
+      fileInput.click();
+    });
+
+    async function updateActiveStatus(contentId) {
+      try {
+        console.log('Updating active status for content ID:', contentId);
+        const formData = new FormData();
+        formData.append('content_id', contentId);
+        const response = await fetch('/updateActiveStatus', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          console.log("pass status change")
+          location.reload();
+        } else {
+          console.log("failed status change")
+        }
+      } catch {
+        console.log("IM DAE")
+      }
+    }
+  </script>
+
+  <%- include("templates/footer") %>

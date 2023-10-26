@@ -1,0 +1,68 @@
+<%- include("templates/header") %>
+
+  <link rel="stylesheet" href="/css/editContent.css">
+
+  <h1>Edit Image</h1>
+  <div class="edit-container">
+    <%= console.log("FACTA NON VERBA", Image) %>
+      <form action="/updateImage" method="post" enctype="multipart/form-data">
+        <div>
+          <label for="shortenedUrl">Shortened URL:</label>
+          <input type="text" id="shortenedUrl" name="shortenedUrl" class="edit-input"
+            value="<%= Image.shortened_url %>">
+        </div>
+
+        <div class="select-container">
+          <label for="imageTag">Image Tag:</label>
+          <select id="imageTag" name="imageTag" class="edit-input">
+            <% tags.forEach(tag=> { %>
+              <option value="<%= tag.tag_id %>" <% if (tag.tag_id===Image.tag_id) { %>selected<% } %>><%=
+                    tag.description %>
+              </option>
+              <% }); %>
+          </select>
+        </div>
+
+        <div class="checkbox-container">
+          <label for="activeStatus">Active Status:</label>
+          <input type="checkbox" id="activeStatus" name="activeStatus" class="edit-input" <% if
+            (Image.active_status===1) { %>checked<% } %>>
+        </div>
+        <input type="hidden" name="content_id" value="<%= Image.content_id %>">
+        <div id="picture-upload" class="file">
+          <label class="file-label">
+            <input class="file-input" type="file" name="image" />
+            <span class="file-cta">
+              <span class="file-icon"><i class="fas fa-upload"></i></span>
+              <span class="file-label">Choose a file…</span>
+            </span>
+            <span class="file-name">No File</span>
+          </label>
+        </div>
+        &nbsp;
+        <button type="submit" class="edit-button">Update Image</button>
+        <% if (typeof errorMessage !=='undefined' && errorMessage !==null) { %>
+          <div class="error-message">
+            <%= errorMessage %>
+          </div>
+          <% } else if (typeof req.query.error !=='undefined' ) { %>
+            <div class="error-message">
+              <%= decodeURIComponent(req.query.error) %>
+            </div>
+            <% } %>
+  </div>
+  </form>
+
+  </div>
+
+  <script>
+    const fileInput = document.querySelector('#picture-upload input[type=file]');
+    fileInput.onchange = () => {
+      if (fileInput.files.length > 0) {
+        const fileName = document.querySelector('#picture-upload .file-name');
+        fileName.textContent = fileInput.files[0].name;
+      }
+    }
+  </script>
+
+  <%- include("templates/footer") %>

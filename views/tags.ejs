@@ -1,0 +1,85 @@
+<%- include("templates/header") %>
+
+<link rel="stylesheet" href="/css/tags.css">
+<% console.log(tag)%>
+<h1>Tag: <%= tag %></h1>
+
+<!-- Display All Images -->
+<h2>Images</h2>
+<div class="display-images-container">
+  <% if (content.images.length > 0) { %>
+    <div class="row">
+      <% for (let i = 0; i < content.images.length; i++) { %>
+        <% if (content.images[i].active_status === 1) { %>
+          <div class="content-container">
+            <div class="content-card">
+              <img src="<%= 'https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/' + content.images[i].image_uuid + '.jpg' %>" alt="Image">
+            </div>
+          </div>
+        <% } %>
+      <% if ((i + 1) % 3 === 0 || i === content.images.length - 1) { %>
+        </div><% if (i !== content.images.length - 1) { %><div class="row"><% } %>
+      <% } %>
+      <% } %>
+  <% } else { %>
+    <div class="content-container">
+      <div class="content-card">
+        <p>There is nothing for this content ☹</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<!-- Display All Links -->
+<h2>Links</h2>
+<div class="display-links-container">
+  <% if (content.links.length > 0) { %>
+    <div class="row">
+      <% for (let i = 0; i < content.links.length; i++) { %>
+        <% if (content.links[i].active_status === 1) { %>
+          <div class="content-container">
+            <div class="content-card">
+              <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + content.links[i].content_url %>"><%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + content.links[i].content_url %></a>
+            </div>
+          </div>
+        <% } %>
+      <% if ((i + 1) % 3 === 0 || i === content.links.length - 1) { %>
+        </div><% if (i !== content.links.length - 1) { %><div class="row"><% } %>
+      <% } %>
+      <% } %>
+  <% } else { %>
+    <div class="content-container">
+      <div class="content-card">
+        <p>There is nothing for this content ☹</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<!-- Display All Texts -->
+<h2>Texts</h2>
+<div class="display-texts-container">
+  <% if (content.texts.length > 0) { %>
+    <div class="row">
+      <% for (let i = 0; i < content.texts.length; i++) { %>
+        <% if (content.texts[i].active_status === 1) { %>
+          <div class="content-container">
+            <div class="content-card">
+              <p><%= content.texts[i].text_value %></p>
+            </div>
+          </div>
+        <% } %>
+      <% if ((i + 1) % 3 === 0 || i === content.texts.length - 1) { %>
+        </div><% if (i !== content.texts.length - 1) { %><div class="row"><% } %>
+      <% } %>
+      <% } %>
+  <% } else { %>
+    <div class="content-container">
+      <div class="content-card">
+        <p>There is nothing for this content ☹</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<%- include("templates/footer") %>

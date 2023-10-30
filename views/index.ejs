@@ -5,11 +5,11 @@
 <% if (typeof username !== 'undefined') { %>
   <div class="welcome-container">
     <h1>Welcome, <%= username %>!</h1>
-    <p>Discover amazing photos from talented creators.</p>
+    <p>Save Your Own Content in this Datastore.</p>
   </div>
 <% } else { %>
   <div class="welcome-container">
-    <h1>Welcome to Linkaio!</h1>
+    <h1>Welcome to Database.io 😊!</h1>
     <p>Sign up or log in to start exploring.</p>
   </div>
 <% } %>  
@@ -20,7 +20,7 @@
     <div class="content-header">
       <h2>Top Image</h2>
     </div>
-    <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topImage.content_url %>">
+    <a href="">
       <div class="content-card">
         <img src="<%= 'https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/' + topImage.image_uuid + '.jpg' %>" alt="Image">
       </div>
@@ -33,7 +33,7 @@
       <h2>Top Link</h2>
     </div>
     <div class="content-card">
-      <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topLink.content_url %>"><%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topLink.content_url %></a>
+      <a href="<%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + topLink.content_url %>"><%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + topLink.content_url %></a>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
       <h2>Top Text</h2>
     </div>
     <div class="content-card">
-      <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + topText.content_url %>">
+      <a href="<%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + topText.content_url %>">
       <p><%= topText.text_value %></p>
     </div>
   </div>
@@ -59,17 +59,17 @@
       <div class="content-container">
         <div class="content-card">
           <% if (randomContent[i].content_type_id === 1) { %>
-            <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
-              <%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>
+            <a href="<%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
+              <%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>
             </a>
             <% } else if (randomContent[i].content_type_id === 2) { %>
               <% const imageUrl = 'https://res.cloudinary.com/dfdephn2w/image/upload/v123456789/' + randomContent[i].image_uuid + '.jpg'; %>
   
-              <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>" class="image-link">
+              <a href="<%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>" class="image-link">
                 <img src="<%= imageUrl %>" alt="Image" onload="checkImageSize(this)">
               </a>  
           <% } else { %>
-            <a href="<%= 'https://phlfukjwxe.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
+            <a href="<%= 'http://mczpuqkvbx.us18.qoddiapp.com/showContent/' + randomContent[i].content_url %>">
               <p><%= randomContent[i].text_value %></p>
             </a>
           <% } %>

@@ -115,9 +115,9 @@ router.get("/", async (req, res) => {
 router.get("/createTables", async (req, res) => {
   const create_tables = include("database/create_tables");
 
-  var success = create_tables.createTables();
+  const success = create_tables.createTables();
   if (success) {
-    res.render("successMessage", { message: "Created tables." });
+    res.render("errorMessage", { error: "Created tables." });
   } else {
     res.render("errorMessage", { error: "Failed to create tables." });
   }
